@@ -60,7 +60,8 @@ tool:
     - home: "git"
       name: "Default"
   jdk:
-        - home: "/docker-java-home"
+    installations:
+    - home: "/docker-java-home"
       name: "jdk"
   maven: 
     installations:
