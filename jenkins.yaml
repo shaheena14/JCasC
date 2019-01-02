@@ -1,6 +1,6 @@
 plugins:
   required:
-    junit: 1.25
+    pipeline-maven: 3.5.12
   sites:
   - id: "default"
     url: "https://updates.jenkins.io/update-center.json"
@@ -8,35 +8,46 @@ jenkins:
   agentProtocols:
   - "JNLP4-connect"
   - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
   clouds:
   - kubernetes:
       containerCapStr: "10"
       jenkinsTunnel: "jenkins-agent:50000"
-      jenkinsUrl: "http://192.168.0.3:32605"
+      jenkinsUrl: "http://jenkins.ssp-devservices.app:8080"
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
-      namespace: "jenkins-ssp"
-      serverUrl: "https://kubernetes.default"
+      namespace: "encore-ssp-devsupport"
+      serverUrl: "https://sspdevservices-995bc8eb.hcp.eastus.azmk8s.io:443"
       templates:
       - containers:
-        - args: "${computer.jnlpmac} ${computer.name}"
-          envVars:
-          - containerEnvVar:
-              key: "JENKINS_URL"
-              value: "http://jenkins:8080"
-          image: "jenkins/jnlp-slave:3.10-1"
+        - alwaysPullImage: true
+          args: "${computer.jnlpmac} ${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.10-1"
+          livenessProbe:
+            failureThreshold: 0
+            initialDelaySeconds: 0
+            periodSeconds: 0
+            successThreshold: 0
+            timeoutSeconds: 0
           name: "jnlp"
-          resourceLimitCpu: "1"
-          resourceLimitMemory: "512Mi"
-          resourceRequestCpu: "1"
-          resourceRequestMemory: "512Mi"
+          resourceLimitCpu: "500m"
+          resourceLimitMemory: "1024Mi"
+          resourceRequestCpu: "500m"
+          resourceRequestMemory: "1024Mi"
         label: "jenkins-jenkins-slave "
         name: "default"
         nodeUsageMode: NORMAL
-        slaveConnectTimeoutStr: "0"
+        workspaceVolume:
+          emptyDirWorkspaceVolume:
+            memory: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
   disableRememberMe: false
   mode: NORMAL
-  numExecutors: 5
+  numExecutors: 6
   primaryView:
     all:
       name: "all"
@@ -46,6 +57,9 @@ jenkins:
   views:
   - all:
       name: "all"
+security:
+  remotingCLI:
+    enabled: false
 unclassified:
   bitbucketendpointconfiguration:
     endpoints:
@@ -54,20 +68,17 @@ unclassified:
         manageHooks: false
         repositoriesCacheDuration: 0
         teamCacheDuration: 0
+  location:
+    url: "https://jenkins.ssp-devservices.app/"
 tool:
   git:
     installations:
     - home: "git"
       name: "Default"
   jdk:
-    installations:
-    - home: "/docker-java-home"
-      name: "jdk"
-  maven: 
-    installations:
-    - name: "maven"
-      properties:
-      - installSource:
-          installers:
-          - maven:
-              id: "3.5.4"
+    defaultProperties:
+    - installSource:
+        installers:
+        - jdkInstaller:
+            acceptLicense: false
+  
