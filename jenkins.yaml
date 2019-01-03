@@ -64,8 +64,8 @@ unclassified:
 tool:
   git:
     installations:
-    - home: "git"
-      name: "/usr/bin/git"
+    - home: "/usr/bin/git"
+      name: "Default"
   jdk:
     defaultProperties:
     - installSource:
