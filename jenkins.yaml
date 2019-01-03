@@ -65,7 +65,7 @@ tool:
   git:
     installations:
     - home: "git"
-      name: "Default"
+      name: "/usr/bin/git"
   jdk:
     defaultProperties:
     - installSource:
