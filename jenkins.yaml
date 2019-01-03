@@ -3,7 +3,7 @@ plugins:
     pipeline-maven: 3.5.12
   sites:
   - id: "default"
-    url: "https://updates.jenkins.io/update-center.json"
+    url: "http://updates.jenkins.io/update-center.json"
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
@@ -19,7 +19,7 @@ jenkins:
       maxRequestsPerHostStr: "32"
       name: "kubernetes"
       namespace: "encore-ssp-devsupport"
-      serverUrl: "https://sspdevservices-995bc8eb.hcp.eastus.azmk8s.io:443"
+      serverUrl: "http://sspdevservices-995bc8eb.hcp.eastus.azmk8s.io:443"
       templates:
       - containers:
         - alwaysPullImage: true
@@ -69,7 +69,7 @@ unclassified:
         repositoriesCacheDuration: 0
         teamCacheDuration: 0
   location:
-    url: "https://jenkins.ssp-devservices.app/"
+    url: "http://jenkins.ssp-devservices.app/"
 tool:
   git:
     installations:
