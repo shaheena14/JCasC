@@ -1,3 +1,76 @@
+jenkins:
+  systemMessage: "Welcome Jenkins"
+  numExecutors: 5
+  mode: NORMAL
+  clouds:
+   - kubernetes:
+     containerCapStr: "10"
+     jenkinsTunnel: "jenkins-agent:50000"
+     jenkinsUrl: "http://jenkins.ssp-devservices.app:8080"
+     maxRequestsPerHostStr: "32"
+     name: "kubernetes"
+     namespace: "encore-ssp-devsupport"
+     serverUrl: "https://sspdevservices-995bc8eb.hcp.eastus.azmk8s.io:443"
+     templates:
+        - containers:
+        - alwaysPullImage: true
+          args: "${computer.jnlpmac} ${computer.name}"
+          image: "jenkinsci/jnlp-slave:3.10-1"
+          livenessProbe:
+            failureThreshold: 0
+            initialDelaySeconds: 0
+            periodSeconds: 0
+            successThreshold: 0
+            timeoutSeconds: 0
+          name: "jnlp"
+          resourceLimitCpu: "500m"
+          resourceLimitMemory: "1024Mi"
+          resourceRequestCpu: "500m"
+          resourceRequestMemory: "1024Mi"
+          label: "jenkins-jenkins-slave "
+  
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: false
+  primaryView:
+    all:
+      name: "all"
+  quietPeriod: 5
+  scmCheckoutRetryCount: 2
+  slaveAgentPort: 50000
+  views:
+  - all:
+      name: "all"
+security:
+  remotingCLI:
+    enabled: false
 plugins:
   required:
     pipeline-maven: 3.5.12
+  sites:
+  - id: "default"
+    url: "https://updates.jenkins.io/update-center.json"
+unclassified:
+  bitbucketendpointconfiguration:
+    endpoints:
+    - bitbucketCloudEndpoint:
+        enableCache: false
+        manageHooks: false
+        repositoriesCacheDuration: 0
+        teamCacheDuration: 0
+  location:
+    url: "https://jenkins.ssp-devservices.app/"
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  jdk:
+    defaultProperties:
+    - installSource:
+        installers:
+        - jdkInstaller:
+            acceptLicense: false  
+
+  
