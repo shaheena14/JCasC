@@ -75,10 +75,4 @@ tool:
     installations:
     - home: "git"
       name: "Default"
-  jdk:
-    defaultProperties:
-    - installSource:
-        installers:
-        - jdkInstaller:
-            acceptLicense: false
   
